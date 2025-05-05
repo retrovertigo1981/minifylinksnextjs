@@ -5,8 +5,10 @@ export default function RedirectPage() {
     return null;
 }
 
-export async function getServerSideProps({ params, res }) {
+export async function getServerSideProps({ params, req, res }) {
     const { shortCode } = params;
+    const userIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress || req.socket.remoteAddress || req.ip;
+    console.log('IP del usuario:', userIp);
     try {
         const link = await Link.findOne({ where: { shortLink: shortCode } });
         if (!link) {
@@ -28,6 +30,7 @@ export async function getServerSideProps({ params, res }) {
                 destination: link.originalLink,
                 permanent: false,
             },
+
         };
     } catch (error) {
         console.error('Error en redirección:', error);

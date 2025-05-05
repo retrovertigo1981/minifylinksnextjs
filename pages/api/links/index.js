@@ -1,13 +1,15 @@
 import db from '@/models';
 import { generateShortCode } from '@/utils';
 import { envConfig } from '@/config';
+import { withAuthCheck } from '@/utils'
 const { Link } = db;
 
-export default async function handler(req, res) {
+async function handler(req, res) {
     const { method, body } = req;
-    // const { id } = query;
-    const userId = req.user ? req.user?._id : null;
+    const userId = req.user ? req.user._id : null;
+
     const { originalLink } = body;
+    console.log(userId)
 
     if (method === 'POST') {
         try {
@@ -43,3 +45,5 @@ export default async function handler(req, res) {
     }
 
 }
+
+export default withAuthCheck(handler);
