@@ -17,29 +17,38 @@ export function UrlShortener() {
         setIsLoading(true)
 
         // TODO: Implement actual URL shortening logic
-        // try {
-        //   const res = await fetch("/api/links", {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({ originalUrl: url }),
-        //   })
-        //   const data = await res.json()
-        //   setShortUrl(data.shortUrl)
-        // } catch (error) {
-        //   console.error(error)
-        //   toast.error("Something went wrong.")
-        // }
+        try {
+          const res = await fetch("/api/links", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ originalLink: url }),
+          })
+          const data = await res.json()
+          if (!res.ok) {
+            throw new Error(data.message || "Error al crear el enlace");
+            
+          }
 
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // simulación
-        setShortUrl(`https://shorty.io/${Math.random().toString(36).substr(2, 6)}`)
-        setIsLoading(false)
+          setShortUrl(data.Link)
+          
+        } catch (error) {
+          console.error(error)          
+          toast.error(error.message)
+        } finally {
+            setIsLoading(false)
+        }
+
+        
+        
     }
+
+    
 
     const handleCopy = () => {
         navigator.clipboard.writeText(shortUrl)
         setIsCopied(true)
         setTimeout(() => setIsCopied(false), 2000)
-        toast.success("Short URL copied to clipboard!")
+        toast.success("URL copiada exitosamente")
     }
 
     return (
@@ -47,20 +56,20 @@ export function UrlShortener() {
             <form onSubmit={handleSubmit} className="flex space-x-2">
                 <Input
                     type="url"
-                    placeholder="Enter your long URL here"
+                    placeholder="Ingrese su URL larga aquí"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     className="flex-grow"
                     required
                 />
                 <Button type="submit" disabled={isLoading}>
-                    {isLoading ? "Shortening..." : "Shorten"}
+                    {isLoading ? "Cortando..." : "Cortar"}
                     <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
             </form>
 
             {shortUrl && (
-                <div className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 p-3 rounded-md">
+                <div className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-500 p-3 rounded-md">
                     <Input value={shortUrl} readOnly className="flex-grow bg-transparent border-none" />
                     <Button variant="ghost" size="icon" onClick={handleCopy} className="flex-shrink-0">
                         {isCopied ? (
