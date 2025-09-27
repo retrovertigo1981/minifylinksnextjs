@@ -44,7 +44,7 @@ const verifyToken = async (req) => {
 
 // Versión para middleware de Next.js
 const verifyTokenFromString = (token) => {
-    if (!token) return null;
+    if (typeof token !== 'string') return null;
 
     try {
         return verify(token, envConfig.JWT_SECRET, { algorithms: ["HS256"] });

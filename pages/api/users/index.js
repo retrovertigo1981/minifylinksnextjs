@@ -2,7 +2,7 @@ import db from "@/models";
 const { User } = db
 
 export default async function handler(req, res) {
-    const { method } = req;
+    const { method, body } = req;
     if (method === 'GET') {
         try {
             const users = await User.findAll();
@@ -11,7 +11,7 @@ export default async function handler(req, res) {
             res.status(500).json({ message: 'Error al obtener usuarios', error: error.message });
         }
     } else if (method === 'POST') {
-        const data = req.body
+        const data = body;
 
         try {
             const user = await User.create(data)

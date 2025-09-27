@@ -27,6 +27,8 @@ export default async function handler(req, res) {
             const signature = generateToken({
                 _id: user.id,
                 email: user.email,
+                name: user.name,
+                lastname: user.lastName,
                 // tipo_usuario: usuario.tipo_usuario,
 
             })

@@ -1,21 +1,21 @@
-"use client"
+'use client';
 
-import { useState, useEffect } from "react"
-import { useTheme } from "next-themes"
+import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 
 export function Layout({ children }) {
-    const [mounted, setMounted] = useState(false)
-    const { theme, setTheme } = useTheme()
+	const [mounted, setMounted] = useState(false);
+	// const { theme, setTheme } = useTheme();
 
-    useEffect(() => {
-        setMounted(true)
-    }, [])
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
-    if (!mounted) return null
+	if (!mounted) return null;
 
-    return (
-        <div className="min-h-screen bg-white dark:bg-black text-gray-900 dark:text-gray-100 transition-colors duration-200">
-            {children}
-        </div>
-    )
+	return (
+		<div className='min-h-screen bg-white dark:bg-[#09090b] text-gray-900 dark:text-gray-100 transition-colors duration-200'>
+			{children}
+		</div>
+	);
 }
